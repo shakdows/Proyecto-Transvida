@@ -5,6 +5,15 @@ const RUTAS_PUBLICAS = ["/login", "/cuenta-inactiva"];
 
 /** Refresca la sesión en cada visita y manda al login a quien no ha iniciado sesión. */
 export async function updateSession(request: NextRequest) {
+  if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY) {
+    return new NextResponse(
+      "Configuración incompleta: faltan las variables NEXT_PUBLIC_SUPABASE_URL y/o " +
+        "NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY. Cárgalas en Vercel (Settings → Environment Variables) " +
+        "y vuelve a desplegar (Redeploy).",
+      { status: 503, headers: { "content-type": "text/plain; charset=utf-8" } },
+    );
+  }
+
   let response = NextResponse.next({ request });
 
   const supabase = createServerClient(
