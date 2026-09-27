@@ -27,6 +27,13 @@ export default async function EmpresaPage({ params }: { params: Promise<{ id: st
   // Si la base de datos no la devuelve, es de otra organización o no existe.
   if (!empresa) redirect("/sin-acceso");
 
+  const { data: sedes } = await supabase
+    .from("sedes")
+    .select("id, nombre, direccion, distrito, horario_recojo, contacto_nombre")
+    .eq("cliente_id", id)
+    .eq("activo", true)
+    .order("nombre");
+
   const filas: [string, string][] = [
     ["Razón social", empresa.razon_social],
     ["RUC", empresa.ruc],
@@ -58,8 +65,23 @@ export default async function EmpresaPage({ params }: { params: Promise<{ id: st
           </dl>
         </CardContent>
       </Card>
+      <Card className="mt-6">
+        <CardHeader>
+          <CardTitle>Sedes ({sedes?.length ?? 0})</CardTitle>
+        </CardHeader>
+        <CardContent className="flex flex-col gap-3">
+          {sedes?.map((s) => (
+            <div key={s.id} className="rounded-md border p-3 text-sm">
+              <p className="font-medium">{s.nombre}</p>
+              <p className="text-muted-foreground">{[s.direccion, s.distrito].filter(Boolean).join(", ")}</p>
+              {s.horario_recojo && <p className="text-xs text-muted-foreground">Horario de recojo: {s.horario_recojo}</p>}
+            </div>
+          ))}
+          {sedes?.length === 0 && <p className="text-sm text-muted-foreground">Sin sedes registradas.</p>}
+        </CardContent>
+      </Card>
       <p className="mt-4 text-sm text-muted-foreground">
-        Sedes, servicios, documentos y el dashboard ambiental se agregan en las fases 2 a 6.
+        Servicios, documentos y el dashboard ambiental se agregan en las próximas fases.
       </p>
     </div>
   );

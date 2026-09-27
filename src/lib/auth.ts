@@ -2,6 +2,7 @@ import { cache } from "react";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import type { Rol } from "@/lib/roles";
+import { todosLosPermisos, type MapaPermisos, type Permiso } from "@/lib/permisos";
 
 export type Perfil = {
   id: string;
@@ -59,3 +60,24 @@ export async function requireRol(roles?: Rol[]) {
   if (roles && !roles.includes(sesion.perfil.rol)) redirect("/sin-acceso");
   return sesion;
 }
+
+/** Permisos del usuario conectado (ADMIN y SUPER_ADMIN: todos; CLIENTE: ninguno). */
+export const getPermisos = cache(async (): Promise<MapaPermisos> => {
+  const sesion = await getSesion();
+  if (!sesion || sesion.sinPerfil) return todosLosPermisos(false);
+  const { rol, organization_id } = sesion.perfil;
+  if (rol === "admin" || rol === "super_admin") return todosLosPermisos(true);
+  if (rol === "cliente" || !organization_id) return todosLosPermisos(false);
+
+  const supabase = await createClient();
+  const { data } = await supabase
+    .from("permisos_rol")
+    .select("permiso, permitido")
+    .eq("organization_id", organization_id)
+    .eq("rol", rol);
+  const mapa = todosLosPermisos(false);
+  for (const fila of data ?? []) {
+    if (fila.permiso in mapa) mapa[fila.permiso as Permiso] = Boolean(fila.permitido);
+  }
+  return mapa;
+});

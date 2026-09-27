@@ -51,11 +51,10 @@ export const MENU: ItemMenu[] = [
   { label: "Inicio", href: "/inicio", icono: "inicio", roles: [...ROLES] },
   { label: "Organizaciones", href: "/organizaciones", icono: "organizaciones", roles: ["super_admin"] },
   { label: "Usuarios", href: "/usuarios", icono: "usuarios", roles: ["super_admin", "admin"] },
-  { label: "Clientes", href: "/clientes", icono: "clientes", roles: ["admin", "operaciones", "facturacion"] },
+  { label: "Maestros", href: "/maestros", icono: "maestros", roles: ["admin", "operaciones", "facturacion", "planta"] },
   { label: "Mi empresa", href: "/empresa", icono: "empresa", roles: ["cliente"] },
   { label: "Configuración", href: "/configuracion", icono: "configuracion", roles: ["admin"] },
   // Módulos de fases siguientes
-  { label: "Maestros", href: "/maestros", icono: "maestros", roles: ["admin"], fase: 2 },
   { label: "Programación", href: "/programacion", icono: "programacion", roles: ["admin", "operaciones"], fase: 3 },
   { label: "Mis recojos de hoy", href: "/mis-recojos", icono: "recojos", roles: ["chofer"], fase: 4 },
   { label: "Pesaje y cierre", href: "/pesaje", icono: "pesaje", roles: ["planta"], fase: 5 },

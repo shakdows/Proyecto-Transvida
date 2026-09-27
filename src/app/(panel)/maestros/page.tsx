@@ -1,6 +1,5 @@
 import { redirect } from "next/navigation";
 
-// Los clientes ahora viven en Maestros
-export default function ClientesPage() {
+export default function MaestrosPage() {
   redirect("/maestros/clientes");
 }
