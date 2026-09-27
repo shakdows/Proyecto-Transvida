@@ -31,3 +31,8 @@
 6. Revisa los listados: el cliente con "2" sedes, los tipos, las dos unidades y los dos choferes.
 7. Extra: **Tipos de unidad** → agrega uno → ábrelo con el lápiz → **Eliminar** → clave `0000` (rechaza) y luego `1234` (elimina).
 8. Extra: entra como `operaciones@ecoruta.test`: puede crear unidades pero no clientes; como `chofer@ecoruta.test` no ve Maestros.
+
+## Modo prueba (acceso con un clic)
+En la pantalla de login hay botones para entrar con cada usuario demo sin escribir la contraseña.
+Para ocultarlos (por ejemplo, antes de dar acceso a un cliente real), agrega en Vercel la variable
+`MODO_DEMO` con el valor `false` y vuelve a desplegar.

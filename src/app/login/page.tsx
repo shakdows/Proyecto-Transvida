@@ -1,8 +1,11 @@
 import { Footer } from "@/components/footer";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { modoDemoActivo } from "@/lib/demo";
+import { AccesoDemo } from "./acceso-demo";
 import { LoginForm } from "./login-form";
 
 export const metadata = { title: "Iniciar sesión" };
+export const dynamic = "force-dynamic";
 
 export default function LoginPage() {
   return (
@@ -20,6 +23,7 @@ export default function LoginPage() {
             <p className="mt-1 text-sm text-muted-foreground">Gestión integral para operadoras de residuos sólidos</p>
           </div>
           <LoginForm />
+          {modoDemoActivo() && <AccesoDemo />}
         </div>
       </main>
       <Footer />
